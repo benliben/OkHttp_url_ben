@@ -10,7 +10,7 @@
     android:orientation="vertical"
     tools:context="com.example.benben.okhttp_url_ben.MainActivity">
 
-    <com.example.benben.okhttp_url_ben.FlowLayout
+    <com.example.benben.okhttputils.FlowLayouts
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
@@ -80,7 +80,9 @@
             android:onClick="clearSession"
             android:text="clearSession"/>
 
-    </com.example.benben.okhttp_url_ben.FlowLayout>
+    </com.example.benben.okhttputils.FlowLayouts>
+
+
 
     <ProgressBar
         android:id="@+id/id_progress"
