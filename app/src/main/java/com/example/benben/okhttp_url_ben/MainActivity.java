@@ -42,39 +42,33 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "lyx";
 
 
-    public class MyStringCallback extends StringCallback
-    {
+    public class MyStringCallback extends StringCallback {
         @Override
-        public void onBefore(Request request)
-        {
+        public void onBefore(Request request) {
             super.onBefore(request);
             setTitle("loading...");
         }
 
         @Override
-        public void onAfter()
-        {
+        public void onAfter() {
             super.onAfter();
             setTitle("Sample-okHttp");
         }
 
         @Override
-        public void onError(okhttp3.Call call, Exception e)
-        {
+        public void onError(okhttp3.Call call, Exception e) {
             e.printStackTrace();
-            mTextview.setText("onError:" + e.getMessage());
+            mTextview.setText("失败+onError:" + e.getMessage());
         }
 
         @Override
-        public void onResponse(String response)
-        {
+        public void onResponse(String response) {
             Log.e("TAG","onResponse：complete");
-            mTextview.setText("onResponse:" + response);
+            mTextview.setText("响应+onResponse:" + response);
         }
 
         @Override
-        public void inProgress(float progress)
-        {
+        public void inProgress(float progress) {
             Log.e(TAG, "inProgress:" + progress);
             mProgress.setProgress((int) (100 * progress));
         }
@@ -89,14 +83,17 @@ public class MainActivity extends AppCompatActivity {
         mProgress.setMax(100);
     }
 
+
+    /**获取Html*/
     public void getHtml(View view) {
-        String url = "http://pic10.nipic.com/20101004/3320946_021726451306_2.jpg";
+        String url = "https://www.baidu.com/baidu?wd=html%CE%C4%BC%FE&tn=monline_4_dg";
         OkHttpUtils
                 .get()
                 .url(url)
                 .build()
                 .execute(new MyStringCallback());
     }
+
 
     public void postString(View view) {
         String url = mBaseUrl + "user!postString";
@@ -109,11 +106,10 @@ public class MainActivity extends AppCompatActivity {
                 .execute(new MyStringCallback());
     }
 
-    public void postFile(View view)
-    {
+    /**文件*/
+    public void postFile(View view) {
         File file = new File(Environment.getExternalStorageDirectory(), "messenger_01.png");
-        if (!file.exists())
-        {
+        if (!file.exists()) {
             Toast.makeText(MainActivity.this, "文件不存在，请修改文件路径", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -128,8 +124,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void getUser(View view)
-    {
+    /**用户*/
+    public void getUser(View view) {
         String url = mBaseUrl + "user!getUser";
         OkHttpUtils
                 .post()//
@@ -137,17 +133,14 @@ public class MainActivity extends AppCompatActivity {
                 .addParams("username", "lyx")//
                 .addParams("password", "123")//
                 .build()//
-                .execute(new UserCallback()
-                {
+                .execute(new UserCallback() {
                     @Override
-                    public void onError(okhttp3.Call call, Exception e)
-                    {
+                    public void onError(okhttp3.Call call, Exception e) {
                         mTextview.setText("onError:" + e.getMessage());
                     }
 
                     @Override
-                    public void onResponse(User response)
-                    {
+                    public void onResponse(User response) {
                         mTextview.setText("onResponse:" + response.username);
                     }
                 });
@@ -155,35 +148,32 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void getUsers(View view)
-    {
+    /**用户*/
+    public void getUsers(View view) {
         Map<String, String> params = new HashMap<String, String>();
         params.put("name", "lyx");
         String url = mBaseUrl + "user!getUsers";
-        OkHttpUtils//
-                .post()//
-                .url(url)//
-//                .params(params)//
-                .build()//
-                .execute(new ListUserCallback()//
-                {
+        OkHttpUtils
+                .post()
+                .url(url)
+//                .params(params)
+                .build()
+                .execute(new ListUserCallback() {
                     @Override
-                    public void onError(okhttp3.Call call, Exception e)
-                    {
-                        mTextview.setText("onError:" + e.getMessage());
+                    public void onError(okhttp3.Call call, Exception e) {
+                        mTextview.setText("错误+onError:" + e.getMessage());
                     }
 
                     @Override
-                    public void onResponse(List<User> response)
-                    {
-                        mTextview.setText("onResponse:" + response);
+                    public void onResponse(List<User> response) {
+                        mTextview.setText("响应+onResponse:" + response);
                     }
                 });
     }
 
 
-    public void getHttpsHtml(View view)
-    {
+
+    public void getHttpsHtml(View view) {
         String url = "https://kyfw.12306.cn/otn/";
 
         OkHttpUtils
@@ -194,8 +184,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void getImage(View view)
-    {
+    public void getImage(View view) {
         mTextview.setText("");
         String url = "http://images.csdn.net/20150817/1.jpg";
         OkHttpUtils
@@ -206,17 +195,14 @@ public class MainActivity extends AppCompatActivity {
                 .connTimeOut(20000)
                 .readTimeOut(20000)
                 .writeTimeOut(20000)
-                .execute(new BitmapCallback()
-                {
+                .execute(new BitmapCallback() {
                     @Override
-                    public void onError(okhttp3.Call call, Exception e)
-                    {
+                    public void onError(okhttp3.Call call, Exception e) {
                         mTextview.setText("onError:" + e.getMessage());
                     }
 
                     @Override
-                    public void onResponse(Bitmap bitmap)
-                    {
+                    public void onResponse(Bitmap bitmap) {
                         Log.e("TAG","onResponse：complete");
                         mImageview.setImageBitmap(bitmap);
                     }
@@ -224,12 +210,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void uploadFile(View view)
-    {
+    /**上传文件*/
+    public void uploadFile(View view) {
 
         File file = new File(Environment.getExternalStorageDirectory(), "messenger_01.png");
-        if (!file.exists())
-        {
+        if (!file.exists()) {
             Toast.makeText(MainActivity.this, "文件不存在，请修改文件路径", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -253,12 +238,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void multiFileUpload(View view)
-    {
+    /**多文件的上传*/
+    public void multiFileUpload(View view) {
         File file = new File(Environment.getExternalStorageDirectory(), "messenger_01.png");
         File file2 = new File(Environment.getExternalStorageDirectory(), "test1#.txt");
-        if (!file.exists())
-        {
+        if (!file.exists()) {
             Toast.makeText(MainActivity.this, "文件不存在，请修改文件路径", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -277,6 +261,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**下载文件*/
     public void downloadFile(View view)
     {
         String url = "https://github.com/hongyangAndroid/okhttp-utils/blob/master/gson-2.2.1.jar?raw=true";
@@ -284,8 +269,7 @@ public class MainActivity extends AppCompatActivity {
                 .get()//
                 .url(url)//
                 .build()//
-                .execute(new FileCallBack(Environment.getExternalStorageDirectory().getAbsolutePath(), "gson-2.2.1.jar")//
-                {
+                .execute(new FileCallBack(Environment.getExternalStorageDirectory().getAbsolutePath(), "gson-2.2.1.jar") {
 
                     @Override
                     public void onBefore(Request request)
@@ -294,25 +278,23 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void inProgress(float progress, long total)
-                    {
+                    public void inProgress(float progress, long total) {
                         mProgress.setProgress((int) (100 * progress));
                     }
 
                     @Override
-                    public void onError(okhttp3.Call call, Exception e)
-                    {
+                    public void onError(okhttp3.Call call, Exception e) {
                         Log.e(TAG, "onError :" + e.getMessage());
                     }
 
                     @Override
-                    public void onResponse(File file)
-                    {
+                    public void onResponse(File file) {
                         Log.e(TAG, "onResponse :" + file.getAbsolutePath());
                     }
                 });
     }
 
+    /**其他请求*/
     public void otherRequestDemo(View view)
     {
         //also can use delete ,head , patch
@@ -325,29 +307,23 @@ public class MainActivity extends AppCompatActivity {
                 .build()//
                 .execute(new MyStringCallback());
 
-
-
         OkHttpUtils
                 .head()//
                 .url(url)
                 .addParams("name", "zhy")
                 .build()
                 .execute();
-
        */
-
-
     }
 
-    public void clearSession(View view)
-    {
+    /**清空*/
+    public void clearSession(View view) {
         OkHttpUtils.getInstance().getCookieStore().removeAll();
     }
 
 
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         super.onDestroy();
         OkHttpUtils.getInstance().cancelTag(this);
     }
